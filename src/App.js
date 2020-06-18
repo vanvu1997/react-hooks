@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from 'react';
+import queryString from 'query-string';
 import './App.scss';
 //import ColorBox from './components/ColorBox';
 import TodoList from './components/TodoList';
 import TodoForm from './components/TodoForm';
 import PostList from './components/PostList';
+import Pagination from './components/Pagination';
+import PostFiltersForm from './components/PostFilterForm';
+import Clock from './components/Clock';
 
 function App() {
   const [todoList, setTodoList] = useState([
@@ -13,24 +17,43 @@ function App() {
   ]);
 
   const [postList, setPostList] = useState([]);
+  const [pagination, setPagination] = useState({
+    _page: 1,
+    _limit: 10,
+    _totalRows: 1,
+  });
+  const [filters, setFilter] = useState({
+    _limit: 10,
+    _page: 1,
+  });
 
   useEffect(() => {
     async function fetchPostList() {
       //
       try {
-        const requestUrl = 'http://js-post-api.herokuapp.com/api/posts?_limit=10&_page=1';
+        const paramsString = queryString.stringify(filters);
+        const requestUrl = `http://js-post-api.herokuapp.com/api/posts?${paramsString}`;
         const response = await fetch(requestUrl);
         const responseJSON = await response.json();
         console.log({ responseJSON });
 
-        const { data } = responseJSON;
+        const { data, pagination } = responseJSON;
         setPostList(data);
+        setPagination(pagination);
       } catch (error) {
         console.log('Failed to fetch post list: ', error.message);
       }
     }
     fetchPostList();
-  }, []);
+  }, [filters]);
+
+  function handlePageChange(newPage) {
+    console.log('new page:', newPage);
+    setFilter({
+      ...filters,
+      _page: newPage,
+    })
+  }
 
   function handleTodoClick(todo) {
     console.log(todo);
@@ -53,12 +76,30 @@ function App() {
     setTodoList(newTodoList);
   }
 
+  function handleFiltersChange(newFilters) {
+    console.log('New filter: ', newFilters);
+    setFilter({
+      ...filters,
+      _page: 1,
+      title_like: newFilters.searchTerm,
+    });
+  }
+
+  const [showClock, setShowClock] = useState(true);
   return (
     <div className="app">
-      <h1>React hooks - PostList</h1>
+      <h1>React hooks - Clock</h1>
+      {showClock && <Clock />}
+      <button onClick={() => setShowClock(false)}>hide</button>
       {/* <TodoForm onSubmit={handleTodoFormSubmit} /> */}
       {/* <TodoList todos={todoList} onTodoClick={handleTodoClick} /> */}
+
+      {/* <PostFiltersForm onSubmit={handleFiltersChange} />
       <PostList posts={postList} />
+      <Pagination
+        pagination={pagination}
+        onPageChange={handlePageChange}
+      /> */}
     </div>
   );
 }
