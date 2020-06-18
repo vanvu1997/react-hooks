@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import queryString from 'query-string';
 import './App.scss';
-//import ColorBox from './components/ColorBox';
-import TodoList from './components/TodoList';
-import TodoForm from './components/TodoForm';
-import PostList from './components/PostList';
-import Pagination from './components/Pagination';
-import PostFiltersForm from './components/PostFilterForm';
-import Clock from './components/Clock';
+// //import ColorBox from './components/ColorBox';
+// import TodoList from './components/TodoList';
+// import TodoForm from './components/TodoForm';
+// import PostList from './components/PostList';
+// import Pagination from './components/Pagination';
+// import PostFiltersForm from './components/PostFilterForm';
+// import Clock from './components/Clock';
+// import BetterClock from './components/BetterClock';
+import MagicBox from './components/MagicBox';
 
 function App() {
   const [todoList, setTodoList] = useState([
@@ -47,59 +49,49 @@ function App() {
     fetchPostList();
   }, [filters]);
 
-  function handlePageChange(newPage) {
-    console.log('new page:', newPage);
-    setFilter({
-      ...filters,
-      _page: newPage,
-    })
-  }
+  // function handlePageChange(newPage) {
+  //   console.log('new page:', newPage);
+  //   setFilter({
+  //     ...filters,
+  //     _page: newPage,
+  //   })
+  // }
 
-  function handleTodoClick(todo) {
-    console.log(todo);
-    const index = todoList.findIndex(x => x.id === todo.id);
-    if (index < 0) return;
-    const newTodoList = [...todoList];
-    newTodoList.splice(index, 1);
-    setTodoList(newTodoList);
-  }
+  // function handleTodoClick(todo) {
+  //   console.log(todo);
+  //   const index = todoList.findIndex(x => x.id === todo.id);
+  //   if (index < 0) return;
+  //   const newTodoList = [...todoList];
+  //   newTodoList.splice(index, 1);
+  //   setTodoList(newTodoList);
+  // }
 
-  function handleTodoFormSubmit(formValues) {
-    console.log('555555555', formValues);
+  // function handleTodoFormSubmit(formValues) {
+  //   console.log('555555555', formValues);
 
-    const newTodo = {
-      id: todoList.length + 1,
-      ...formValues,
-    };
-    const newTodoList = [...todoList];
-    newTodoList.push(newTodo);
-    setTodoList(newTodoList);
-  }
+  //   const newTodo = {
+  //     id: todoList.length + 1,
+  //     ...formValues,
+  //   };
+  //   const newTodoList = [...todoList];
+  //   newTodoList.push(newTodo);
+  //   setTodoList(newTodoList);
+  // }
 
-  function handleFiltersChange(newFilters) {
-    console.log('New filter: ', newFilters);
-    setFilter({
-      ...filters,
-      _page: 1,
-      title_like: newFilters.searchTerm,
-    });
-  }
+  // function handleFiltersChange(newFilters) {
+  //   console.log('New filter: ', newFilters);
+  //   setFilter({
+  //     ...filters,
+  //     _page: 1,
+  //     title_like: newFilters.searchTerm,
+  //   });
+  // }
 
-  const [showClock, setShowClock] = useState(true);
+  //const [showClock, setShowClock] = useState(true);
   return (
     <div className="app">
       <h1>React hooks - Clock</h1>
-      {showClock && <Clock />}
-      <button onClick={() => setShowClock(false)}>hide</button>
-      {/* <TodoForm onSubmit={handleTodoFormSubmit} /> */}
-      {/* <TodoList todos={todoList} onTodoClick={handleTodoClick} /> */}
-
-      {/* <PostFiltersForm onSubmit={handleFiltersChange} />
-      <PostList posts={postList} />
-      <Pagination
-        pagination={pagination}
-        onPageChange={handlePageChange}
-      /> */}
+      <MagicBox />
     </div>
   );
 }
